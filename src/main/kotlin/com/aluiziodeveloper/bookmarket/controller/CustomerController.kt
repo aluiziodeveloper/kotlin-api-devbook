@@ -28,7 +28,7 @@ class CustomerController(
     }
 
     @GetMapping("/{id}")
-    fun findById(@PathVariable id: String): CustomerModel {
+    fun findById(@PathVariable id: Int): CustomerModel {
         return customerService.findById(id)
     }
 
@@ -40,13 +40,13 @@ class CustomerController(
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun update(@PathVariable id: String, @RequestBody customer: PutCustomerRequest) {
+    fun update(@PathVariable id: Int, @RequestBody customer: PutCustomerRequest) {
         customerService.update(customer.toCustomerModel(id))
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun delete(@PathVariable id: String) {
+    fun delete(@PathVariable id: Int) {
         customerService.delete(id)
     }
 }

@@ -1,12 +1,8 @@
 package com.aluiziodeveloper.bookmarket.service
 
-import com.aluiziodeveloper.bookmarket.controller.request.PostCustomerRequest
-import com.aluiziodeveloper.bookmarket.controller.request.PutCustomerRequest
 import com.aluiziodeveloper.bookmarket.model.CustomerModel
 import org.springframework.stereotype.Service
 import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestParam
 
 @Service
 class CustomerService {
@@ -23,17 +19,18 @@ class CustomerService {
         return customers.filter { it.id == id }.first()
     }
 
-    fun create(customer: PostCustomerRequest) {
+    fun create(customer: CustomerModel) {
         var id = if(customers.isEmpty()) {
             1
         } else {
-            customers.last().id.toInt() + 1
+            customers.last().id!!.toInt() + 1
         }.toString()
-        customers.add(CustomerModel(id, customer.name, customer.email))
+        customer.id = id
+        customers.add(customer)
     }
 
-    fun update(id: String, customer: PutCustomerRequest) {
-        customers.filter { it.id == id }.first().let {
+    fun update(customer: CustomerModel) {
+        customers.filter { it.id == customer.id }.first().let {
             it.name = customer.name
             it.email = customer.email
         }

@@ -2,6 +2,7 @@ package com.aluiziodeveloper.bookmarket.controller
 
 import com.aluiziodeveloper.bookmarket.controller.request.PostCustomerRequest
 import com.aluiziodeveloper.bookmarket.controller.request.PutCustomerRequest
+import com.aluiziodeveloper.bookmarket.extension.toCustomerModel
 import com.aluiziodeveloper.bookmarket.model.CustomerModel
 import com.aluiziodeveloper.bookmarket.service.CustomerService
 import org.springframework.http.HttpStatus
@@ -34,13 +35,13 @@ class CustomerController(
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun create(@RequestBody customer: PostCustomerRequest) {
-        customerService.create(customer)
+        customerService.create(customer.toCustomerModel())
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun update(@PathVariable id: String, @RequestBody customer: PutCustomerRequest) {
-        customerService.update(id, customer)
+        customerService.update(customer.toCustomerModel(id))
     }
 
     @DeleteMapping("/{id}")

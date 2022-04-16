@@ -3,6 +3,7 @@ package com.aluiziodeveloper.bookmarket.controller
 import com.aluiziodeveloper.bookmarket.controller.request.PostCustomerRequest
 import com.aluiziodeveloper.bookmarket.controller.request.PutCustomerRequest
 import com.aluiziodeveloper.bookmarket.model.CustomerModel
+import com.aluiziodeveloper.bookmarket.service.CustomerService
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -11,47 +12,40 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 
 @RestController()
 @RequestMapping("customers")
-class CustomerController {
-    val customers = mutableListOf<CustomerModel>()
-
+class CustomerController(
+    val customerService: CustomerService
+) {
     @GetMapping
-    fun findAll(): MutableList<CustomerModel> {
-        return customers
+    fun findAll(@RequestParam name: String?): List<CustomerModel> {
+        return customerService.findAll(name)
     }
 
     @GetMapping("/{id}")
     fun findById(@PathVariable id: String): CustomerModel {
-        return customers.filter { it.id == id }.first()
+        return customerService.findById(id)
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun create(@RequestBody customer: PostCustomerRequest) {
-        var id = if(customers.isEmpty()) {
-            1
-        } else {
-            customers.last().id.toInt() + 1
-        }.toString()
-        customers.add(CustomerModel(id, customer.name, customer.email))
+        customerService.create(customer)
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun update(@PathVariable id: String, @RequestBody customer: PutCustomerRequest) {
-        customers.filter { it.id == id }.first().let {
-            it.name = customer.name
-            it.email = customer.email
-        }
+        customerService.update(id, customer)
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun delete(@PathVariable id: String) {
-        customers.removeIf { it.id == id }
+        customerService.delete(id)
     }
 }

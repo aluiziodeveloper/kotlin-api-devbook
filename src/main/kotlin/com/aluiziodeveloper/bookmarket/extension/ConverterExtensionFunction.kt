@@ -5,15 +5,25 @@ import com.aluiziodeveloper.bookmarket.controller.request.PostCustomerRequest
 import com.aluiziodeveloper.bookmarket.controller.request.PutBookRequest
 import com.aluiziodeveloper.bookmarket.controller.request.PutCustomerRequest
 import com.aluiziodeveloper.bookmarket.enums.BookStatus
+import com.aluiziodeveloper.bookmarket.enums.CustomerStatus
 import com.aluiziodeveloper.bookmarket.model.BookModel
 import com.aluiziodeveloper.bookmarket.model.CustomerModel
 
 fun PostCustomerRequest.toCustomerModel(): CustomerModel {
-    return CustomerModel(name = this.name, email = this.email)
+    return CustomerModel(
+        name = this.name,
+        email = this.email,
+        status = CustomerStatus.ATIVO
+    )
 }
 
-fun PutCustomerRequest.toCustomerModel(id: Int): CustomerModel {
-    return CustomerModel(id = id, name = this.name, email = this.email)
+fun PutCustomerRequest.toCustomerModel(previousValue: CustomerModel): CustomerModel {
+    return CustomerModel(
+        id = previousValue.id,
+        name = this.name,
+        email = this.email,
+        status = previousValue.status
+    )
 }
 
 fun PostBookRequest.toBookModel(customer: CustomerModel): BookModel {

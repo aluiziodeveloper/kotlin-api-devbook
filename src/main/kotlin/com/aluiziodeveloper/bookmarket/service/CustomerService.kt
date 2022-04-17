@@ -1,12 +1,14 @@
 package com.aluiziodeveloper.bookmarket.service
 
+import com.aluiziodeveloper.bookmarket.enums.CustomerStatus
 import com.aluiziodeveloper.bookmarket.model.CustomerModel
 import com.aluiziodeveloper.bookmarket.repository.CustomerRepository
 import org.springframework.stereotype.Service
 
 @Service
 class CustomerService(
-    val customerRepository: CustomerRepository
+    val customerRepository: CustomerRepository,
+    val bookService: BookService
 ) {
     fun findAll(name: String?): List<CustomerModel> {
         name?.let {
@@ -29,9 +31,9 @@ class CustomerService(
     }
 
     fun delete(id: Int) {
-        if(!customerRepository.existsById(id)) {
-            throw Exception("Customer not found")
-        }
-        customerRepository.deleteById(id)
+        val customer = findById(id)
+        bookService.deleteByCustomer(customer)
+        customer.status = CustomerStatus.INATIVO
+        customerRepository.save(customer)
     }
 }

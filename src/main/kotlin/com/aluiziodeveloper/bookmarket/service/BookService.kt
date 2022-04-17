@@ -2,6 +2,7 @@ package com.aluiziodeveloper.bookmarket.service
 
 import com.aluiziodeveloper.bookmarket.enums.BookStatus
 import com.aluiziodeveloper.bookmarket.model.BookModel
+import com.aluiziodeveloper.bookmarket.model.CustomerModel
 import com.aluiziodeveloper.bookmarket.repository.BookRepository
 import org.springframework.stereotype.Service
 
@@ -32,5 +33,13 @@ class BookService(
         val book = findById(id)
         book.status = BookStatus.DELETADO
         update(book)
+    }
+
+    fun deleteByCustomer(customer: CustomerModel) {
+        val books = bookRepository.findByCustomer(customer)
+        for (book in books) {
+            book.status = BookStatus.DELETADO
+        }
+        bookRepository.saveAll(books)
     }
 }

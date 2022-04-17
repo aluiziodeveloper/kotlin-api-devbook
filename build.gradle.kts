@@ -5,6 +5,7 @@ plugins {
 	id("io.spring.dependency-management") version "1.0.11.RELEASE"
 	kotlin("jvm") version "1.6.10"
 	kotlin("plugin.spring") version "1.6.10"
+	kotlin("plugin.jpa") version "1.6.10"
 }
 
 group = "com.aluiziodeveloper"
@@ -21,7 +22,6 @@ dependencies {
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-	//implementation("org.flywaydb:flyway-core:8.5.8")
 	implementation("org.flywaydb:flyway-core:8.4.4")
 	implementation("org.flywaydb:flyway-mysql:8.4.4")
 	runtimeOnly("mysql:mysql-connector-java")

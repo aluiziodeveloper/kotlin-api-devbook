@@ -3,7 +3,6 @@ package com.aluiziodeveloper.bookmarket.service
 import com.aluiziodeveloper.bookmarket.model.CustomerModel
 import com.aluiziodeveloper.bookmarket.repository.CustomerRepository
 import org.springframework.stereotype.Service
-import org.springframework.web.bind.annotation.PathVariable
 
 @Service
 class CustomerService(
@@ -16,13 +15,11 @@ class CustomerService(
         return customerRepository.findAll().toList()
     }
 
-    fun findById(id: Int): CustomerModel {
-        return customerRepository.findById(id).orElseThrow()
-    }
+    fun findById(id: Int): CustomerModel =
+        customerRepository.findById(id).orElseThrow()
 
-    fun create(customer: CustomerModel) {
+    fun create(customer: CustomerModel) =
         customerRepository.save(customer)
-    }
 
     fun update(customer: CustomerModel) {
         if(!customerRepository.existsById(customer.id!!)) {
@@ -31,7 +28,7 @@ class CustomerService(
         customerRepository.save(customer)
     }
 
-    fun delete(@PathVariable id: Int) {
+    fun delete(id: Int) {
         if(!customerRepository.existsById(id)) {
             throw Exception("Customer not found")
         }
